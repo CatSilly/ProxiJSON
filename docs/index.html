@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi" id="html-root">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ProxiJSON</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <div class="logo">Proxi<span class="accent">JSON</span></div>
+    <div class="header-actions">
+      <button id="btn-help" data-i18n-title="helpBtnTitle" title="Cú pháp">?</button>
+      <button id="btn-copy" title="Copy JSON">copy</button>
+      <button id="btn-download" data-i18n-title="downloadBtnTitle" title="Tải về">↓</button>
+      <button id="btn-lang" class="btn-lang-toggle">EN</button>
+    </div>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-tab="editor" data-i18n="tabEdit" role="tab" aria-selected="true">✎ soạn</button>
+    <button class="tab" data-tab="preview" data-i18n="tabView" role="tab" aria-selected="false">{ } xem</button>
+  </div>
+
+  <main>
+    <!-- Editor Pane -->
+    <section class="pane" id="pane-editor" role="tabpanel">
+      <div class="pane-bar">
+        <span class="pane-label">input</span>
+        <div class="pane-bar-right">
+          <button id="btn-import" class="pane-btn" data-i18n-title="importBtnTitle" title="Dán JSON và chuyển về định dạng editor">⇐ json</button>
+          <span id="status" class="status"></span>
+        </div>
+      </div>
+      <div class="editor-wrap" id="editor-wrap">
+        <pre class="editor-hl" id="editor-hl" aria-hidden="true"></pre>
+        <textarea
+          id="editor"
+          spellcheck="false"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          placeholder="name: Alice&#10;age: 25&#10;tags:&#10;  - js&#10;  - html"
+        ></textarea>
+      </div>
+    </section>
+
+    <div class="divider" id="divider"></div>
+
+    <!-- Preview Pane -->
+    <section class="pane" id="pane-preview" role="tabpanel">
+      <div class="pane-bar">
+        <span class="pane-label">output</span>
+        <label class="toggle-wrap">
+          <input type="checkbox" id="compact"> compact
+        </label>
+      </div>
+      <pre id="output" aria-live="polite"></pre>
+    </section>
+  </main>
+
+  <!-- Help Sidebar -->
+  <aside class="help-panel" id="help-panel" aria-hidden="true">
+    <div class="help-header">
+      <span data-i18n="helpPanelTitle">cú pháp</span>
+      <button id="help-close" data-i18n-aria="closeAria" aria-label="Đóng">✕</button>
+    </div>
+    <div class="help-body">
+
+      <div class="help-block">
+        <div class="help-title" data-i18n="helpDataTypes">kiểu dữ liệu</div>
+        <pre class="help-code"><span class="c" data-i18n="helpAutoDetect"># tự nhận dạng kiểu</span>
+<span class="k">name</span>: <span class="v">Alice</span>       <span class="c">→ string</span>
+<span class="k">age</span>: <span class="v">25</span>          <span class="c">→ number</span>
+<span class="k">active</span>: <span class="v">true</span>     <span class="c">→ boolean</span>
+<span class="k">score</span>: <span class="v">9.5</span>       <span class="c">→ float</span>
+<span class="k">data</span>: <span class="v">null</span>       <span class="c">→ null</span>
+<span class="k">id</span>: <span class="v">"007"</span>        <span class="c" data-i18n="helpForceStr">→ ép string</span></pre>
+      </div>
+
+      <div class="help-block">
+        <div class="help-title" data-i18n="helpNested">object lồng nhau</div>
+        <pre class="help-code"><span class="k">address</span>:
+  <span class="k">street</span>: <span class="v">123 Lê Lợi</span>
+  <span class="k">city</span>: <span class="v">Hà Nội</span></pre>
+      </div>
+
+      <div class="help-block">
+        <div class="help-title">array</div>
+        <pre class="help-code"><span class="k">tags</span>:
+  <span class="s">-</span> javascript
+  <span class="s">-</span> html
+  <span class="s">-</span> css</pre>
+      </div>
+
+      <div class="help-block">
+        <div class="help-title">array of objects</div>
+        <pre class="help-code"><span class="k">users</span>:
+  <span class="s">-</span>
+    <span class="k">name</span>: <span class="v">Alice</span>
+    <span class="k">role</span>: <span class="v">admin</span>
+  <span class="s">-</span>
+    <span class="k">name</span>: <span class="v">Bob</span>
+    <span class="k">role</span>: <span class="v">user</span></pre>
+      </div>
+
+      <div class="help-block">
+        <div class="help-title">inline</div>
+        <pre class="help-code"><span class="k">colors</span>: <span class="v">[red, green, blue]</span>
+<span class="k">meta</span>: <span class="v">{v: 1, env: prod}</span></pre>
+      </div>
+
+      <div class="help-block">
+        <div class="help-title" data-i18n="helpNotes">lưu ý</div>
+        <pre class="help-code"><span class="c" data-i18n="helpNoteComment"># dòng này là comment</span>
+<span class="c" data-i18n="helpNoteIndent"># thụt lề dùng 2 spaces</span>
+<span class="c" data-i18n="helpNoteYesNo"># yes/no = true/false</span>
+<span class="c" data-i18n="helpNoteNull"># ~ = null</span></pre>
+      </div>
+
+    </div>
+  </aside>
+  <div class="help-overlay" id="help-overlay"></div>
+
+  <div id="toast" class="toast" role="status" aria-live="assertive"></div>
+
+  <!-- Import JSON Modal -->
+  <div class="modal-overlay" id="import-modal"
+       role="dialog" aria-modal="true"
+       aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal" id="modal-box">
+      <div class="modal-header">
+        <span id="modal-title" class="modal-title">⇐ json → editor</span>
+        <button id="modal-close" class="modal-close" data-i18n-aria="closeAria" aria-label="Đóng">✕</button>
+      </div>
+      <textarea id="import-ta" class="import-ta"
+        spellcheck="false" autocomplete="off"
+        autocorrect="off" autocapitalize="off"
+        placeholder='{&#10;  "name": "Alice",&#10;  "age": 25,&#10;  "tags": ["js", "html"]&#10;}'
+      ></textarea>
+      <div class="modal-footer">
+        <span id="import-msg" class="import-msg" aria-live="polite"></span>
+        <div class="modal-actions">
+          <button id="import-cancel" class="modal-btn" data-i18n="importCancelBtn">Huỷ</button>
+          <button id="import-ok"     class="modal-btn modal-btn-ok" data-i18n="importOkBtn" disabled>Chuyển đổi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
+
