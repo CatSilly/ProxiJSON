@@ -32,7 +32,7 @@ A fast, lightweight web tool create a JSON file without having to type in the cu
 ### Getting Started
 1. **Clone the repository:**
 ```bash
-   git clone https://github.com/CatSilly/ProxiJSON
+   git clone https://github.com/CatSilly/ProxiJSON.git
    cd ProxiJSON
    ```
 2. **Install dependencies:**
