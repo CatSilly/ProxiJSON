@@ -8,7 +8,7 @@
 
 A fast, lightweight web tool create a JSON file without having to type in the cumbersome JSON syntax. 
 
-[Open ProxiJSON](https://your-demo-link.com)
+[Open ProxiJSON](https://catsilly.github.io/ProxiJSON/)
 
 ---
 
