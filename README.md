@@ -1,5 +1,5 @@
 > [!NOTE]
-> This project is under development, so errors may occur during use.
+> This repository is marked as archived because I think its already quite feature-rich and doesnt need further development.
 
 # ProxiJSON
 
